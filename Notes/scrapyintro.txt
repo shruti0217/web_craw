@@ -38,7 +38,7 @@ Requests and Response :
 	
 		A request object represents an HTTP request .
 	
-		scrapy.Request(*args)
+		scrapy.HTTP.Request(*args)
 		
 			parameters:
 				url(str): URL of this request
@@ -48,7 +48,25 @@ Requests and Response :
 					  
 					  Defualt value : parse function
 				
-	
+				method (str):
+					HTTP method .
+					Default : get()
+				>More to add
+			
+		Response:
+			
+			represents an HTTP response
+			
+			scrapy.HTTP.Response(*args)
+				parameters:
+				
+					.url : 
+						URL of this response
+					.body : 
+						response body as bytes.
+						For string use :TextResponse.Text
+					.request:
+						The request obj of this response.
 		
 	
 	
