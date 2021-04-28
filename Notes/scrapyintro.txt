@@ -1,0 +1,59 @@
+Creating a Scrapy project :
+
+	$ scrapy startproject projectName
+	
+	
+Spiders:
+
+	Spiders are classes that we define that Scrapy uses to scrape info.
+	
+	They are subclass of Spider.
+	
+	Define intial requests to make
+	how to follow links and how to parse the downloaded page to extract data.
+	
+
+	some attributes and methods of spider:
+		
+		name : identifies the spider and must be unique within a project.
+		
+		start_request():
+			return an iterable of Requests (a list or request or write a generator function) which spider will start crawling from.
+			
+			Subsequent requests will be generated successibely from these initial requests
+			
+	parse(): method to handle the response downloaded for each of the requests made.
+	usually parses the response and finding new URLs to follow
+	
+	
+Requests and Response :
+
+	Scrapy uses Request and response objects for crawling web.
+	
+	Typically generated in spiders and passed till they reach Downloader which executes the request and reutrns a Response object.
+	
+	Both have subclasses
+		
+		Request :
+	
+		A request object represents an HTTP request .
+	
+		scrapy.Request(*args)
+		
+			parameters:
+				url(str): URL of this request
+					if invalid then a ValueError is raised.
+				
+				callback(callable) :Fuction will be called with the response of this request as it's first parameter.
+					  
+					  Defualt value : parse function
+				
+	
+		
+	
+	
+
+
+	response: Holds the page content 
+		instance of TextResponse
+		 

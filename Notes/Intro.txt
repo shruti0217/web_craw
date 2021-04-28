@@ -1,0 +1,115 @@
+				Web Scraping
+
+What is web scraping :
+	
+	process of collecting structured web data in an automated fashion.
+	
+	some use case of web scraping :
+		price monitoring 
+		price intelligence
+		news monitoring
+		lead generation
+		market reasearch
+		
+	(further read : https://www.zyte.com/learn/what-is-web-scraping-used-for-learn/what-is-web-scraping-used-for/)
+	
+	basically extract data from web page
+	
+	   3 elements of web scraping:
+		1.get html
+		2.locate the data
+		3.get data
+		
+Basics of web scraping:
+	
+	Two parts : 
+		web crawler🕷️ :
+			AI that browses the internet.
+			first we crawl the web or site to discover URLs which we then pass to scraper.
+			
+			
+		web scraper ⛏️:
+			Tool to accurately and quickly extract data from a web page.
+				
+			An important part of scraper : 
+				Locators / Selectors : used to find the data that we want to extract from HTML file.
+				e.g. Xpath, CSS selectors, regex or combination of both.
+	
+The web scraping process:
+
+	generally web scraping process looks like:
+		
+		🕷️
+		1. Identify target website
+		
+	2.Collect URLs of pages that we wanna sacrape.
+	3.Make request to these URLs to get HTML of the page.
+	⛏️
+	4.Use locaters to find the data in the HTML
+	5.Save the data in a JSON or CSV file or other format.
+	
+
+Few challenges to tackle if we need dat at scale:
+	
+	Maintaining the scraper if the website layout changes.
+	Managing proxies
+	Working around antibots.
+
+
+Some use cases :
+
+	Price intelligence:
+		Extracting product and pricing info from e-com sites then turing it into intelligence.
+		For making better pricing decisions based on data.
+		
+		-Dynamic pricing 
+		-Revenue optimization
+		-Competitor monitoring
+		-Product trend monitoring 
+
+	Market research:
+		
+		High quality,volume and highly insighful web scraped data of every shape and size is fueling market analysis and BI.
+		
+		-Market trend analysis
+		-Market pricing
+		-Research and dev
+		-
+
+	Alternative data for finance:
+	
+	
+		
+		-Extracting insights from SEC fillings
+		-Estimating company fundamentals
+		-Public sentiment integrations
+	 
+	Real estate:
+	
+	
+	News and content monitoring:
+	
+	Lead generation:
+	
+	Brand monitoring:
+	
+	Business automation:
+	
+	
+	MAP monitoring:
+	
+	
+	
+	
+	
+	
+		
+		
+				
+		
+		
+		
+	
+	
+	
+	
