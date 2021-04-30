@@ -12,18 +12,18 @@ class quotesSpi(scrapy.Spider):
     #To generate initial request.
     #Scrapy will call parse method for each urls.
     #coz parse is default callback method .
-    '''
+    
     start_request = [
         "http://quotes.toscrape.com/page/1/",
         "http://quotes.toscrape.com/page/2/"
 
     ]
+    
+
     '''
-
-
     #using start_request() method:
     # Generates Request obj from url
-    #'''
+    #
     def start_requests(self):       # method used to specify starting urls and collecting more urls from the given urls 
     # so here we are collecting urls in the url list :                               
         urls = [
@@ -40,7 +40,7 @@ class quotesSpi(scrapy.Spider):
             # so here we're returning requests to the urls given using scrapy.Request
             #When program hits yeild it will suspend the fuction and return the url requests
             #
-    '''
+    
     1.Scrapy schedules the scrapy.Request obj returned by start_request method.
     2.Then after it recives a response, it instantiates response obj.
     3.Now it calls the callback method associated with request, passing the response obj as arg.       \
@@ -74,9 +74,7 @@ class quotesSpi(scrapy.Spider):
         # here we'll get selector list obj for all <div class="quote"> type tags.
         #which will contain all the tags matching the query .
 
-        #let's find length of how many such tags are there :
-        #number_of_quotes = len(quotes)
-        #no need for this...
+        
 
 
         #now for each quotes let's dig deeper :
@@ -85,13 +83,11 @@ class quotesSpi(scrapy.Spider):
         #so further (as per the layout of website) we can find the quote (<span class="text">) and the author (<span> <small class="author">)
         # so for each element of quote we'll do : 
 
-        list_of_quotes=[]
+        #list_of_quotes=[]
         #this list will contain dictionary with quote list and author pair.
-
-        #rn it contains dic of pair 'quote':quote and 'author':author
-        dic_ = {}
+                      
         #why is this now working ?
-        #coz we ain't doing it the scarpy way.
+        #coz we ain't doing it the scarpy way...prob
         #so Scrapy uses yield keyword ..
         #scrapy generated many dictionaries
 
@@ -104,16 +100,14 @@ class quotesSpi(scrapy.Spider):
             list_of_quotes.append(dic_)
             #list_of_quotes.append(dict(zip(quote,author)))
         '''
+
+
         for quote in quotes:
             yield{
                 'quote':quotes.css('span.text::text').get(),
                 'author':quotes.css('span small.author::text').get()
             }   
-        '''fileName = f'quotes-{page}.json'    # we'll save it in a html file
-        with open(fileName,'wb') as f:      # create and open a file with write and byte passed.
-            f.write(list_of_quotes)
-            #f.write(response.body) # this will write the response body ..which is in byte form
-        '''
+        
 '''   
 -To run spider :
     $ scrapy crawl Spidy
