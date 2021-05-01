@@ -91,24 +91,23 @@ class quotesSpi(scrapy.Spider):
         #why is this now working ?
         #coz we ain't doing it the scarpy way...prob
         #so Scrapy uses yield keyword ..
-        #scrapy generated many dictionaries
-        '''
+        
+        #here we'll use the passed author to crape the data:
+        #author = getattr(self, author,None)
+        author = self.author
+        # as the author was passed through command line arg we use it to choose a specific author
+        # tho if not found we'll just scrape all the quotes.
         for quote in quotes:
-            dic_.clear()
-            author = quote.css("span small.author::text").get()
-            quote_ = quote.css('div.text::text').get() 
-            dic_['quote'] = quote_
-            dic_['author'] = author
-            list_of_quotes.append(dic_)
-            #list_of_quotes.append(dict(zip(quote,author)))
-       
-        '''
-
-        for quote in quotes:
-            yield{
-                'quote':quote.css('span.text::text').get(),
-                'author':quote.css('span small.author::text').get()
-            }   
+            
+            au = quote.css('span small.author::text').get()
+            if au == author :
+                
+                yield{
+                    'quote':quote.css('span.text::text').get(),
+                    #'author':au
+                    
+                    #'author':quote.css('span small.author::text').get()
+                }   
         #5.Following links:
         # 
         #let's first scrape the links from the web page:
