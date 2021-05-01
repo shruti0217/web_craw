@@ -99,8 +99,8 @@ class quotesSpi(scrapy.Spider):
         # tho if not found we'll just scrape all the quotes.
         for quote in quotes:
             
-            au = quote.css('span small.author::text').get()
-            if au == author :
+            if author.lower() == quote.css('span small.author::text').get().lower():
+            
                 
                 yield{
                     'quote':quote.css('span.text::text').get(),
@@ -152,7 +152,7 @@ class quotesSpi(scrapy.Spider):
 -To store data :
     -use Feed exports:
     
-    $ scrapy crawl Spidy -O fileName.json
+    $ scrapy crawl Spidy -O fileName.json -a author='Author Name'
 
     ** -O will overwrite any existing file
        -o will append new content to any existing file
