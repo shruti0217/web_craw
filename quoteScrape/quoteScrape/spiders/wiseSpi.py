@@ -1,4 +1,7 @@
 import scrapy
+from ..items import QuotescrapeItem
+
+#importing the QuotescrapeItem from items.py so that we can pass 
 
 #1 : Identifing target website:
 #This spider will scrape quotes from : quotes.toscrape.com
@@ -97,17 +100,20 @@ class quotesSpi(scrapy.Spider):
         author = self.author
         # as the author was passed through command line arg we use it to choose a specific author
         # tho if not found we'll just scrape all the quotes.
+
+        item = QuotescrapeItem()
         for quote in quotes:
             
             if author.lower() == quote.css('span small.author::text').get().lower():
             
                 
-                yield{
-                    'quote':quote.css('span.text::text').get(),
-                    #'author':au
+                
+                item['quote']:quote.css('span.text::text').get(),
+                item['author']:author
+            yield item
                     
                     #'author':quote.css('span small.author::text').get()
-                }   
+                
         #5.Following links:
         # 
         #let's first scrape the links from the web page:
