@@ -101,16 +101,18 @@ class quotesSpi(scrapy.Spider):
         # as the author was passed through command line arg we use it to choose a specific author
         # tho if not found we'll just scrape all the quotes.
 
-        item = QuotescrapeItem()
+        item = QuotescrapeItem()    #instance of QuotescrapeItem 
         for quote in quotes:
             
             if author.lower() == quote.css('span small.author::text').get().lower():
             
                 
                 
-                item['quote']:quote.css('span.text::text').get(),
+                item['quote']:quote.css('span.text::text').get()
                 item['author']:author
             yield item
+            # Now this item will be sent to items.py then to pipelines.py 
+            #Coz we enabled piplines 
                     
                     #'author':quote.css('span small.author::text').get()
                 
