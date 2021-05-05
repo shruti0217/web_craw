@@ -1,5 +1,6 @@
 import scrapy
 from ..items import QuotescrapeItem
+from scrapy.http import FormRequest
 
 #importing the QuotescrapeItem from items.py so that we can pass 
 
@@ -17,7 +18,7 @@ class quotesSpi(scrapy.Spider):
     #coz parse is default callback method .
     
     start_urls = [
-        "http://quotes.toscrape.com/",
+        "http://quotes.toscrape.com/login",
     
 
     ]
@@ -46,7 +47,7 @@ class quotesSpi(scrapy.Spider):
     
     1.Scrapy schedules the scrapy.Request obj returned by start_request method.
     2.Then after it recives a response, it instantiates response obj.
-    3.Now it calls the callback method associated with request, passing the response obj as arg.       \
+    3.Now it calls the callback method associated with request, passing the response obj as arg.       
         
     so Request obj => Response obj => callback to associated method
     
@@ -61,7 +62,17 @@ class quotesSpi(scrapy.Spider):
         #This method will handle the response downloaded for each request made. Also finding new URLs to follow.
         #This is where we'll parse the scraped data the way we like.    
        
-    
+        #-----------------logging in--------------------
+        token = response.css('form input::attr(value)').extract_first()
+        return FormRequest.from_response(response,formdata={
+            'csrf_token':token,
+            'username':'Someones@Email.com',
+            'password':'somesName'
+        },callback=self.scrape_begins)
+        
+
+        #But this will make this whole thingy a loop 
+    def scrape_begins(self,response):
         
         #---------------4. Extracting data:-----------
 
@@ -97,20 +108,26 @@ class quotesSpi(scrapy.Spider):
         
         #here we'll use the passed author to crape the data:
         #author = getattr(self, author,None)
-        author = self.author
+        author_ = self.author
         # as the author was passed through command line arg we use it to choose a specific author
         # tho if not found we'll just scrape all the quotes.
 
         item = QuotescrapeItem()    #instance of QuotescrapeItem 
+
         for quote in quotes:
             
-            if author.lower() == quote.css('span small.author::text').get().lower():
-            
+            if author_ == quote.css('span small.author::text').get():
+                print(author_)
                 
                 
-                item['quote']:quote.css('span.text::text').get()
-                item['author']:author
-            yield item
+                #item['quote']:quote.css('span.text::text').get()
+                #item['author']:author_
+                q = quote.css('span.text::text').getall()
+                
+                item['author']:author_
+                #'quote':quote.css('span.text::text').get()
+                item['quote']:q
+                yield item
             # Now this item will be sent to items.py then to pipelines.py 
             #Coz we enabled piplines 
                     
@@ -137,7 +154,7 @@ class quotesSpi(scrapy.Spider):
         '''
             #------:Short cut for creating requests :
         if next_page is not None:
-            yield response.follow(next_page,callback = self.parse)
+            yield response.follow(next_page,callback = self.scrape_begins)
             #Unlike scrapy.request response.follow supports relative links so no need to perform urljoin.
             '''****it returns a Request instance.'''
             # *** for <a> it automatically use it's href attribute !

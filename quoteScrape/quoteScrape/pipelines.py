@@ -12,8 +12,9 @@ import sqlite3
 class QuotescrapePipeline:
     #as item pass through pipline , search for initialization method.
     def __init__(self):
-        self.connect_DB()
-        self.create_TB()
+        #self.connect_DB()
+        #self.create_TB()
+        pass
     
     
     def connect_DB(self):
@@ -23,12 +24,14 @@ class QuotescrapePipeline:
     def create_TB(self):
         self.curr.execute('''DROP table if EXISTS Quotes_table''')
         self.curr.execute('''create table Quotes_table(author text, quote  text)''')
-    def store_DB(self, item):
-        self.curr.execute(''''insert into Quotes_table(?,?)''',(item['author'],item['quote']))
-
+    #def store_DB(self,item):
+    #    self.curr.execute('''insert into Quotes_table(?,?)''',(item['author'],item['quote']))
+    def store_DB(self,item):
+        self.curr.execute('''insert into Quotes_table(?,?)''',(item['author'],item['quote']))
     
     def process_item(self, item, spider):
         #This method will be called automatically.    
         print('\n In the pipeline')
-        self.store_DB(self,item)
+        #self.store_DB(self,item)
+        
         #return item
