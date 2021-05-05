@@ -11,5 +11,6 @@ class QuotescrapeItem(scrapy.Item):
     # define the fields for your item here like:
     author = scrapy.Field()
     quote = scrapy.Field()
+    tags = scrapy.Field()
     # name = scrapy.Field()
     #pass

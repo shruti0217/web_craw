@@ -58,11 +58,11 @@ class quotesSpi(scrapy.Spider):
     
 
     #--------------3.: Handling the urls:--------------
+    #-----------------logging in--------------------
     def parse(self, response):
-        #This method will handle the response downloaded for each request made. Also finding new URLs to follow.
-        #This is where we'll parse the scraped data the way we like.    
+        #Usuallythis is where we'll parse the scraped data the way we like.
+        #     
        
-        #-----------------logging in--------------------
         token = response.css('form input::attr(value)').extract_first()
         return FormRequest.from_response(response,formdata={
             'csrf_token':token,
@@ -71,8 +71,8 @@ class quotesSpi(scrapy.Spider):
         },callback=self.scrape_begins)
         
 
-        #But this will make this whole thingy a loop 
     def scrape_begins(self,response):
+        #This method will handle the response downloaded for each request made. Also finding new URLs to follow.
         
         #---------------4. Extracting data:-----------
 
@@ -98,36 +98,23 @@ class quotesSpi(scrapy.Spider):
         # now each quotes element can be seen as like it is at the start of  <div class="quote">
         #so further (as per the layout of website) we can find the quote (<span class="text">) and the author (<span> <small class="author">)
         # so for each element of quote we'll do : 
-
-        #list_of_quotes=[]
-        #this list will contain dictionary with quote list and author pair.
-                      
-        #why is this now working ?
-        #coz we ain't doing it the scarpy way...prob
-        #so Scrapy uses yield keyword ..
+        
         
         #here we'll use the passed author to crape the data:
         #author = getattr(self, author,None)
         author_ = self.author
         # as the author was passed through command line arg we use it to choose a specific author
-        # tho if not found we'll just scrape all the quotes.
-
+        
         item = QuotescrapeItem()    #instance of QuotescrapeItem 
 
-        for quote in quotes:
-            
+        
+        for quote in quotes :       
             if author_ == quote.css('span small.author::text').get():
-                print(author_)
                 
-                
-                #item['quote']:quote.css('span.text::text').get()
-                #item['author']:author_
-                q = quote.css('span.text::text').getall()
-                
-                item['author']:author_
-                #'quote':quote.css('span.text::text').get()
-                item['quote']:q
-                yield item
+                item['author']=quote.css('span small.author::text').get()#Just this damn lil error 
+                #USE '=' and NOT ':'
+            item['quote']=quote.css('span.text::text').get()
+            yield item
             # Now this item will be sent to items.py then to pipelines.py 
             #Coz we enabled piplines 
                     
