@@ -70,6 +70,20 @@ class quotesSpi(scrapy.Spider):
             'password':'somesName'
         },callback=self.scrape_begins)
         
+    '''def yield_item(self,quote):
+        #Yield items 
+        item = QuotescrapeItem()
+        item['author']=quote.css('span small.author::text').get()#Just this damn lil error 
+        #USE '=' and NOT ':'
+        item['quote']=quote.css('span.text::text').get()
+        item['tags']=quote.css('.tag::text').get()
+        
+        yield item'''
+        # Now this item will be sent to items.py then to pipelines.py 
+        #Coz we enabled piplines 
+             
+        
+
 
     def scrape_begins(self,response):
         #This method will handle the response downloaded for each request made. Also finding new URLs to follow.
@@ -103,22 +117,28 @@ class quotesSpi(scrapy.Spider):
         #here we'll use the passed author to crape the data:
         #author = getattr(self, author,None)
         author_ = self.author
-        # as the author was passed through command line arg we use it to choose a specific author
+        author_=author_.lower().split(',')
+        author_list = [a.strip() for a in author_]
+        print(author_)
         
         item = QuotescrapeItem()    #instance of QuotescrapeItem 
 
         
-        for quote in quotes :       
-            if author_ == quote.css('span small.author::text').get():
-                
+        for quote in quotes :
+            if 'all' in author_list:
                 item['author']=quote.css('span small.author::text').get()#Just this damn lil error 
                 #USE '=' and NOT ':'
-            item['quote']=quote.css('span.text::text').get()
-            yield item
-            # Now this item will be sent to items.py then to pipelines.py 
-            #Coz we enabled piplines 
-                    
-                    #'author':quote.css('span small.author::text').get()
+                item['quote']=quote.css('span.text::text').get()
+                item['tags']=quote.css('.tag::text').get()
+                yield item
+                #yield_item(quote)                     
+            elif quote.css('span small.author::text').get().lower() in author_list :
+                item['author']=quote.css('span small.author::text').get()#Just this damn lil error 
+                item['quote']=quote.css('span.text::text').get()
+                item['tags']=quote.css('.tag::text').get()
+                yield item
+                
+                
                 
         #5.Following links:
         # 
@@ -164,7 +184,10 @@ class quotesSpi(scrapy.Spider):
 -To store data :
     -use Feed exports:
     
-    $ scrapy crawl Spidy -O fileName.json -a author='Author Name'
+    $ scrapy crawl Spidy -O fileName.json -a author='Author1 Name,Author2 Name'
+
+    ->author = 'all' : to scrape all authors
+    
 
     ** -O will overwrite any existing file
        -o will append new content to any existing file
